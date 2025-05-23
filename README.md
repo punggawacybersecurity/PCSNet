@@ -89,7 +89,7 @@ python
 
 ### Instalasi Docker
 
-Untuk deployment yang lebih mudah dan portabel, bisa menggunakan Docker dan Docker Compose. Ini akan membuat container yang sudah punya semua tools dan aplikasi di dalamnya.Docker Desktop (untuk Windows/macOS) atau Docker Engine (untuk Linux) terinstal, Docker Compose terinstal.
+Untuk deployment yang lebih mudah dan portabel, bisa menggunakan Docker dan Docker Compose. Ini akan membuat container yang sudah punya semua tools dan aplikasi di dalamnya.
 ```bash
 	Install Docker Linux Ubuntu :
 	chmod +x install_docker.sh
