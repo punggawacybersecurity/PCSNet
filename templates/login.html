@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PCSNet Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS yang sama dengan register.html */
+        :root {
+            --primary-color: #409eff;
+            --primary-dark: #337ecc;
+            --bg-light: #f0f2f5;
+            --text-dark: #333;
+            --error-color: #d9534f;
+            --success-color: #5cb85c;
+            --border-color: #dcdfe6;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+        .auth-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin: auto;
+        }
+        .auth-logo-img {
+            max-width: 200px;  
+            height: auto;
+            margin-bottom: 30px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .auth-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.15);
+            outline: none;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+        .auth-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .auth-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .flash-messages li {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+        .flash-messages .danger {
+            background-color: #fbe0df;
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+        .flash-messages .success {
+            background-color: #e6ffe6;
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+        .flash-messages .info {
+            background-color: #e0f2f7;
+            color: #409eff;
+            border: 1px solid #409eff;
+        }
+        .auth-link {
+            display: block;
+            margin-top: 25px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            background-color: #333;
+            color: #ccc;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            width: 100%;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <a href="/">
+            <img src="{{ url_for('static', filename='img/logo_punggawa.png') }}" 
+                 alt="Logo Punggawa" 
+                 class="auth-logo-img"
+                 onerror="this.onerror=null;this.src='https://placehold.co/200x44/cccccc/333333?text=Logo';">
+        </a>
+        <h2>Login PCSNet Web</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Ingat saya</label>
+            </div>
+            <button type="submit" class="auth-button">Login</button>
+        </form>
+        <a href="{{ url_for('register') }}" class="auth-link">Belum punya akun? Daftar di sini</a>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 PCSNet Web. Support by Google Gemini API.
+    </div>
+</body>
+</html>

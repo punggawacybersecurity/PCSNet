@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Chat - PCSNet Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #409eff;
+            --primary-dark: #337ecc;
+            --bg-light: #f8f9fa;
+            --bg-medium: #eef7ff;
+            --text-dark: #333;
+            --text-medium: #555;
+            --border-color: #dcdfe6;
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .header .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .header .nav-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+        .header .nav-menu ul li a {
+            text-decoration: none;
+            color: var(--text-medium);
+            font-weight: 500;
+            font-size: 1.05em;
+            transition: color 0.3s ease;
+        }
+        .header .nav-menu ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .content-page {
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+        .content-page h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .chat-list {
+            list-style: none;
+            padding: 0;
+        }
+        .chat-item {
+            background-color: var(--bg-medium);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .chat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        .chat-item-info {
+            flex-grow: 1;
+        }
+        .chat-item-title {
+            font-weight: 600;
+            font-size: 1.15em;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        .chat-item-date {
+            font-size: 0.9em;
+            color: var(--text-medium);
+        }
+        .chat-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-item-link, .edit-btn, .delete-btn, .delete-all-btn {
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .chat-item-link:hover {
+            background-color: var(--primary-dark);
+        }
+        .edit-btn {
+            background-color: #ffc107;  
+            color: #333;
+        }
+        .edit-btn:hover {
+            background-color: #e0a800;
+        }
+        .delete-btn, .delete-all-btn {  
+            background-color: #dc3545;  
+        }
+        .delete-btn:hover, .delete-all-btn:hover {
+            background-color: #c82333;
+        }
+        .no-chats {
+            text-align: center;
+            color: var(--text-medium);
+            padding: 30px;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #ccc;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            z-index: 1000;
+            min-width: 300px;
+            text-align: center;
+        }
+        .flash-messages li {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .flash-messages .danger {
+            background-color: #fbe0df;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+        }
+        .flash-messages .success {
+            background-color: #e6ffe6;
+            color: #5cb85c;
+            border: 1px solid #5cb85c;
+        }
+        .flash-messages .info {
+            background-color: #e0f2f7;
+            color: #409eff;
+            border: 1px solid #409eff;
+        }
+
+        /* Modal for editing title */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .modal-content input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .modal-content button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        .modal-content button:hover {
+            background-color: var(--primary-dark);
+        }
+        .delete-all-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="logo">PCSNet AI</a>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="/">Beranda</a></li>
+                <li><a href="/chat_ai">Chat AI</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="/chat_history">Riwayat Chat</a></li>
+                {% endif %}
+                <li><a href="/tentang">Tentang</a></li>
+                <li><a href="/kontak">Kontak</a></li>
+                <li><a href="https://www.punggawa.com/" target="_blank">Website Punggawa</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="/logout">Logout ({{ current_user.username }})</a></li>
+                {% else %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Daftar</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="content-page">
+        <h2>Riwayat Chat</h2>
+        
+        {% if sessions %}
+        <div class="delete-all-container">
+            <form action="{{ url_for('delete_all_chats') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus SEMUA riwayat chat Anda? Tindakan ini tidak dapat dibatalkan.');">
+                <button type="submit" class="delete-all-btn">Hapus Semua Chat</button>
+            </form>
+        </div>
+        <ul class="chat-list">
+            {% for session in sessions %}
+            <li class="chat-item">
+                <div class="chat-item-info">
+                    <div class="chat-item-title">{{ session.title }}</div>
+                    <div class="chat-item-date">Dibuat: {{ session.created_at.strftime('%d %B %Y %H:%M') }}</div>
+                </div>
+                <div class="chat-item-actions">
+                    <a href="{{ url_for('chat_ai', chat_id=session.id) }}" class="chat-item-link">Lihat Chat</a>
+                    <button class="edit-btn" onclick="openEditModal('{{ session.id }}', '{{ session.title }}')">Edit</button>
+                    <form action="{{ url_for('delete_chat', chat_id=session.id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus chat ini? Ini akan menghapus semua pesan terkait.');">
+                        <button type="submit" class="delete-btn">Hapus</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-chats">Anda belum memiliki riwayat chat. Mulai percakapan baru di <a href="{{ url_for('chat_ai') }}">PCSNet AI</a>!</p>
+        {% endif %}
+                <center><a href="/">
+            <img src="{{ url_for('static', filename='img/logo_punggawa.png') }}" 
+                 alt="Logo Punggawa" 
+                 class="auth-logo-img"
+                 onerror="this.onerror=null;this.src='https://placehold.co/200x44/cccccc/333333?text=Logo';">
+        </a></center>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 PCSNet Web. Support by Google Gemini API.
+    </div>
+
+    <div id="editChatModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditModal()">&times;</span>
+            <h3>Edit Judul Chat</h3>
+            <form id="editChatForm" method="POST">
+                <input type="hidden" name="chat_id" id="editChatId">
+                <input type="text" name="new_title" id="editChatTitle" placeholder="Judul baru" required>
+                <button type="submit">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const editChatModal = document.getElementById('editChatModal');
+        const editChatIdInput = document.getElementById('editChatId');
+        const editChatTitleInput = document.getElementById('editChatTitle');
+        const editChatForm = document.getElementById('editChatForm');
+
+        function openEditModal(chatId, currentTitle) {
+            editChatIdInput.value = chatId;
+            editChatTitleInput.value = currentTitle;
+            editChatForm.action = "{{ url_for('edit_chat_title', chat_id=0) }}".replace('/0', '/' + chatId);
+            editChatModal.style.display = 'flex'; // Use flex to center
+        }
+
+        function closeEditModal() {
+            editChatModal.style.display = 'none';
+        }
+        window.onclick = function(event) {
+            if (event.target == editChatModal) {
+                closeEditModal();
+            }
+        }
+    </script>
+</body>
+</html>

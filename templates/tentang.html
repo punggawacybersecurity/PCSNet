@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - PCSNet Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #409eff;
+            --primary-dark: #337ecc;
+            --bg-light: #f8f9fa;
+            --bg-medium: #eef7ff;
+            --text-dark: #333;
+            --text-medium: #555;
+            --border-color: #dcdfe6;
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .header .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .header .nav-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+        .header .nav-menu ul li a {
+            text-decoration: none;
+            color: var(--text-medium);
+            font-weight: 500;
+            font-size: 1.05em;
+            transition: color 0.3s ease;
+        }
+        .header .nav-menu ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .content-page {
+            flex-grow: 1;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+        .content-page h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .content-page p {
+            margin-bottom: 1em;
+            font-size: 1.05em;
+            color: var(--text-medium);
+        }
+        .content-page ul {
+            list-style: disc;
+            margin-left: 25px;
+            margin-bottom: 1em;
+        }
+        .content-page li {
+            margin-bottom: 0.5em;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #ccc;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            z-index: 1000;
+            min-width: 300px;
+            text-align: center;
+        }
+        .flash-messages li {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .flash-messages .danger {
+            background-color: #fbe0df;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+        }
+        .flash-messages .success {
+            background-color: #e6ffe6;
+            color: #5cb85c;
+            border: 1px solid #5cb85c;
+        }
+        .flash-messages .info {
+            background-color: #e0f2f7;
+            color: #409eff;
+            border: 1px solid #409eff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="logo">PCSNet Web</a>
+        <nav class="nav-menu">
+          <ul>
+        <li><a href="/">Beranda</a></li> <li><a href="/chat_ai">Chat AI</a></li> {% if current_user.is_authenticated %}
+        <li><a href="/chat_history">Riwayat Chat</a></li>
+        {% endif %}
+        <li><a href="/tentang">Tentang</a></li>
+        <li><a href="/kontak">Kontak</a></li>
+        <li><a href="https://www.punggawa.com/" target="_blank">Website Punggawa</a></li>
+        {% if current_user.is_authenticated %}
+        <li><a href="/logout">Logout ({{ current_user.username }})</a></li>
+        {% else %}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Daftar</a></li>
+        {% endif %}
+         </ul>
+        </nav>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="content-page">
+    <p><strong>PCSNet</strong> (Punggawa Cyber Security Network Testing), sebelumnya dikenal sebagai <strong>JSNet (Juke Security Network Testing)</strong>, adalah platform berbasis web yang dirancang untuk mempermudah proses pengujian keamanan jaringan dan aplikasi secara efisien dan terpusat.</p>
+    <p>Dalam versi terbarunya, PCSNet hadir dengan antarmuka yang lebih modern, responsif, dan ditingkatkan dari segi performa. Kini, PCSNet juga dilengkapi dengan fitur <strong>AI Assistant</strong> yang didukung oleh <strong>Gemini AI</strong>, memungkinkan pengguna mendapatkan analisis serta saran keamanan secara cerdas dan interaktif.</p>
+    <p>Melalui PCSNet, pengguna dapat melakukan berbagai macam pengujian keamanan langsung dari website, tanpa memerlukan instalasi perangkat lunak tambahan. Hasil pemindaian ditampilkan secara instan dan mudah dipahami, baik untuk pemula maupun profesional keamanan siber.</p>
+    <p>Berikut adalah fitur-fitur unggulan yang tersedia di PCSNet:</p>
+    <p><strong>1. Whois Information</strong> – Menampilkan informasi kepemilikan dan detail teknis dari nama domain.</p>
+    <p><strong>2. DNS Lookup</strong> – Memeriksa dan menampilkan informasi DNS seperti A record, MX, dan lainnya.</p>
+    <p><strong>3. Web Technology Detection</strong> – Mendeteksi teknologi web yang digunakan oleh situs target seperti CMS, framework, dan web server.</p>
+    <p><strong>4. IP Locator</strong> – Melacak lokasi geografis dari alamat IP yang dimasukkan.</p>
+    <p><strong>5. NMAP Scanner</strong> – Melakukan pemindaian port dan layanan terbuka pada jaringan target menggunakan NMAP.</p>
+    <p><strong>6. Check Subdomain</strong> – Mencari subdomain aktif dari sebuah domain untuk analisa dan pengujian lebih lanjut.</p>
+    <p><strong>7. Check WAF</strong> – Mengidentifikasi apakah situs menggunakan sistem proteksi Web Application Firewall.</p>
+    <p><strong>8. SQLMap Tool</strong> – Menguji celah SQL Injection secara otomatis menggunakan alat SQLMap.</p>
+    <p><strong>9. XSS Testing Tool</strong> – Melakukan pengujian terhadap kemungkinan celah Cross-Site Scripting (XSS).</p>
+    <p><strong>10. HTTP Header Checker</strong> – Menampilkan dan menganalisa header HTTP untuk memahami konfigurasi keamanan situs.</p>
+    <p><strong>11. Traceroute</strong> – Menelusuri jalur jaringan dari perangkat ke server target.</p>
+    <p><strong>12. DDoS Testing (Simulasi Aman)</strong> – Mensimulasikan trafik tinggi untuk menguji ketahanan situs terhadap serangan DDoS.</p>
+    <p><strong>13. DDoS Vulnerability Check</strong> – Mendeteksi potensi kerentanan terhadap serangan DDoS secara pasif.</p>
+    <p><strong>PCSNet</strong> adalah alat yang ideal bagi profesional keamanan siber, peneliti, serta siapa saja yang ingin melakukan audit dan pengujian sistem secara cepat dan efektif.</p>
+    <p>Dengan fitur-fitur lengkap dan integrasi AI yang canggih, PCSNet menjadi solusi cerdas dan andal dalam menjaga ketahanan sistem Anda terhadap ancaman siber.</p>
+            <center><a href="/">
+            <img src="{{ url_for('static', filename='img/logo_punggawa.png') }}" 
+                 alt="Logo Punggawa" 
+                 class="auth-logo-img"
+                 onerror="this.onerror=null;this.src='https://placehold.co/200x44/cccccc/333333?text=Logo';">
+        </a></center>
+    </div>
+    <div class="footer">
+        &copy; 2025 PCSNet Web. Support by Google Gemini API.
+    </div>
+</body>
+</html>

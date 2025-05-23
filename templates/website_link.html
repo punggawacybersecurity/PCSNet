@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website - PCSNet Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #409eff;
+            --primary-dark: #337ecc;
+            --bg-light: #f8f9fa;
+            --bg-medium: #eef7ff;
+            --text-dark: #333;
+            --text-medium: #555;
+            --border-color: #dcdfe6;
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .header .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .header .nav-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+        .header .nav-menu ul li a {
+            text-decoration: none;
+            color: var(--text-medium);
+            font-weight: 500;
+            font-size: 1.05em;
+            transition: color 0.3s ease;
+        }
+        .header .nav-menu ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .content-page {
+            flex-grow: 1;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            text-align: center;
+        }
+        .content-page h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .content-page p {
+            margin-bottom: 1em;
+            font-size: 1.05em;
+            color: var(--text-medium);
+        }
+        .content-page .website-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .content-page .website-link:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background-color: #333;
+            color: #ccc;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            z-index: 1000;
+            min-width: 300px;
+            text-align: center;
+        }
+        .flash-messages li {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .flash-messages .danger {
+            background-color: #fbe0df;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+        }
+        .flash-messages .success {
+            background-color: #e6ffe6;
+            color: #5cb85c;
+            border: 1px solid #5cb85c;
+        }
+        .flash-messages .info {
+            background-color: #e0f2f7;
+            color: #409eff;
+            border: 1px solid #409eff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="logo">PCSNet Web</a>
+        <nav class="nav-menu">
+        <ul>
+        <li><a href="/">Beranda</a></li> <li><a href="/chat_ai">Chat AI</a></li> {% if current_user.is_authenticated %}
+        <li><a href="/chat_history">Riwayat Chat</a></li>
+        {% endif %}
+        <li><a href="/tentang">Tentang</a></li>
+        <li><a href="/kontak">Kontak</a></li>
+        <li><a href="https://www.punggawa.com/" target="_blank">Website Punggawa</a></li>
+        {% if current_user.is_authenticated %}
+        <li><a href="/logout">Logout ({{ current_user.username }})</a></li>
+        {% else %}
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Daftar</a></li>
+        {% endif %}
+         </ul>
+        </nav>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="content-page">
+        <h2>Kunjungi Website Resmi</h2>
+        <p>Anda dapat menemukan informasi lebih lanjut dan sumber daya terkait Gemini AI di website resmi Google:</p>
+        <a href="https://gemini.google.com/" target="_blank" class="website-link">Kunjungi Website Google Gemini</a>
+        <p style="margin-top: 20px;">(Tautan akan membuka tab baru di browser Anda)</p>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 PCSNet Web. Support by Google Gemini API.
+    </div>
+</body>
+</html>
