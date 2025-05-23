@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "1337:1337"
+    volumes:
+      - .:/app
+      - app_data:/app/site.db
+    environment:
+      # GANTI NILAI DI BAWAH INI DENGAN KUNCI ASLI ANDA
+      SECRET_KEY: "your_strong_secret_key_here" # Ganti dengan kunci rahasia yang kuat!
+      # GOOGLE_API_KEY tidak lagi diperlukan di sini karena di-hardcode di app.py
+    privileged: true 
+    # command: gunicorn -b 0.0.0.0:1337 app:app # Gunakan ini untuk produksi
+    restart: always
+
+volumes:
+  app_data:
