@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - PCSNet Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #409eff;
+            --primary-dark: #337ecc;
+            --bg-light: #f8f9fa;
+            --bg-medium: #eef7ff;
+            --text-dark: #333;
+            --text-medium: #555;
+            --border-color: #dcdfe6;
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.12);
+            --scan-btn-color: #28a745;
+            --scan-btn-hover: #218838;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        .header .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .header .nav-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+        .header .nav-menu ul li a {
+            text-decoration: none;
+            color: var(--text-medium);
+            font-weight: 500;
+            font-size: 1.05em;
+            transition: color 0.3s ease;
+        }
+        .header .nav-menu ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .content-page { /* Menggunakan content-page sebagai wadah utama */
+            flex-grow: 1;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+        .content-page h1, .content-page h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .content-page label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .content-page select, 
+        .content-page input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-page select:focus, 
+        .content-page input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.15);
+            outline: none;
+        }
+        .content-page button {
+            background-color: var(--scan-btn-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .content-page button:hover {
+            background-color: var(--scan-btn-hover);
+            transform: translateY(-2px);
+        }
+        .content-page pre {
+            background-color: #333;
+            color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            line-height: 1.4;
+            margin-top: 20px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        #scanResult.placeholder {
+            color: #aaa;
+        }
+        #scanResult.error {
+            color: #d9534f;
+            background-color: #fbe0df;
+            border: 1px solid #d9534f;
+        }
+        #scanResult.loading {
+            color: #ffc107;
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+        }
+
+
+        .footer {
+            background-color: #333;
+            color: #ccc;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            z-index: 1000;
+            min-width: 300px;
+            text-align: center;
+        }
+        .flash-messages li {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .flash-messages .danger {
+            background-color: #fbe0df;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+        }
+        .flash-messages .success {
+            background-color: #e6ffe6;
+            color: #5cb85c;
+            border: 1px solid #5cb85c;
+        }
+        .flash-messages .info {
+            background-color: #e0f2f7;
+            color: #409eff;
+            border: 1px solid #409eff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="logo">PCSNet Web</a>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="/">Beranda</a></li> <li><a href="/chat_ai">Chat AI</a></li> {% if current_user.is_authenticated %}
+                <li><a href="/chat_history">Riwayat Chat</a></li>
+                {% endif %}
+                <li><a href="/tentang">Tentang</a></li>
+                <li><a href="/kontak">Kontak</a></li>
+                <li><a href="https://www.punggawa.com/" target="_blank">Website Punggawa</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="/logout">Logout ({{ current_user.username }})</a></li>
+                {% else %}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Daftar</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="content-page">
+        <center><a href="/">
+            <img src="{{ url_for('static', filename='img/logo_punggawa.png') }}" 
+                 alt="Logo Punggawa" 
+                 class="auth-logo-img"
+                 onerror="this.onerror=null;this.src='https://placehold.co/200x44/cccccc/333333?text=Logo';">
+        </a></center>
+        <h1>PCSNet Web Interface</h1>
+        <form id="scanForm">
+            <label for="tool">Pilih Tools:</label>
+            <select id="tool" name="tool">
+                <option value="whois">1. Whois Information</option>
+                <option value="dnslookup">2. DNS Lookup</option>
+                <option value="whatweb">3. Web Technology Detection</option>
+                <option value="ip_locator">4. IP Locator</option>
+                <option value="nmap_basic">5. NMAP (Basic Scan)</option>
+                <option value="nmap_extensive">5. NMAP (Extensive Scan)</option>
+                <option value="subdomain">6. Check Subdomain Web</option>
+                <option value="waf_check">7. Check WAF</option>
+                <option value="sqlmap">8. Tools SQLMap</option>
+                <option value="xss">9. Tools XSS</option>
+                <option value="http_header">10. HTTP Header</option>
+                <option value="traceroute">11. Traceroute</option>
+                <option value="ddos_test">12. Testing DDOS (Slow HTTP Test)</option>
+                <option value="ddos_vuln_check">13. Check Vuln DDOS (NMAP Slowloris)</option>
+            </select>
+
+            <label for="target">Website atau IP Address (Contoh: example.com atau 192.168.1.1):</label>
+            <input type="text" id="target" name="target" placeholder="https://example.com" required>
+
+            <button type="submit">Mulai Scan</button>
+        </form>
+
+        <h2>Hasil Scan:</h2>
+        <pre id="scanResult" class="placeholder">Hasil scan akan muncul di sini.</pre>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 PCSNet Web. Support by Google Gemini API.
+    </div>
+
+    <script>
+        document.getElementById('scanForm').addEventListener('submit', async function(event) {
+            event.preventDefault();  
+
+            const tool = document.getElementById('tool').value;
+            const target = document.getElementById('target').value;
+            const scanResultDiv = document.getElementById('scanResult');
+
+            scanResultDiv.textContent = 'Scanning... Silakan tunggu. Ini mungkin memerlukan waktu untuk scan ekstensif.';
+            scanResultDiv.className = 'loading';  
+
+            try {
+                const response = await fetch('/', {  
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        tool: tool,
+                        target: target
+                    })
+                });
+                const data = await response.json();
+                scanResultDiv.textContent = data.result;
+                scanResultDiv.className = '';  
+            } catch (error) {
+                scanResultDiv.textContent = 'Error: ' + error.message + '. Pastikan tools sudah terinstal dan server dapat menjalankan perintah.';
+                scanResultDiv.className = 'error';  
+            }
+        });
+    </script>
+</body>
+</html>
