@@ -50,7 +50,7 @@ sudo ./install_pcsnet_tools.sh
 
 2. **Download Aplikasi Flask**
 ```bash
-git clone https://github.com/KangAli/PCSNet.git
+git clone https://github.com/punggawacybersecurity/PCSNet.git
 cd PCSNet
 python -m venv venv
 ```
